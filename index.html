@@ -4,34 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taraweeh Rakat Counter</title>
-
-    <!-- Link Manifest for PWA -->
-    <link rel="manifest" href="manifest.json">
-
-    <!-- Link Stylesheet -->
+    
+    <!-- Link to External CSS -->
     <link rel="stylesheet" href="style.css">
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="icons/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
     <div class="notification" id="notification">Take a short break!</div>
     <div class="celebrate" id="celebrate"></div>
-
+    
     <div class="container">
-        <h1>Taraweeh Rakat Counter</h1>
-        <div class="count-display" id="rakatCount">0</div>
+        <h1><span class="logo">🕌 Taraweeh Rakat Counter</span></h1>
 
+        <p class="author">By - Rayyan Islam</p>
+
+        
+        <div class="count-display" id="rakatCount">0</div>
+        
         <div class="progress-container">
             <div class="progress-bar" id="progressBar"></div>
         </div>
-
+        
         <div class="buttons">
             <button id="increment">Count 2 Rakats</button>
             <button id="reset">Reset</button>
         </div>
-
+        
         <div class="controls">
             <div class="select-wrapper">
                 <label for="totalRakats">Total: </label>
@@ -43,27 +49,30 @@
             </div>
             <button id="night-toggle">Night Mode</button>
         </div>
-
+        
         <div class="info">
-            <p>• Tap "Count 2 Rakats" after completing each 2 Rakats during Taraweeh.</p>
+            <p>• Tap the "Count 2 Rakats" button after completing each 2 Rakats during Taraweeh.</p>
             <p>• A break notification will appear after every 4 Rakats.</p>
-            <p>• The progress bar shows your Taraweeh progress.</p>
+            <p>• The progress bar shows your progress through your Taraweeh prayer.</p>
             <p>• Press <strong>Space</strong> to count or <strong>R</strong> to reset.</p>
         </div>
     </div>
-
-    <!-- Completion Dua -->
+    
     <div class="dua-container" id="duaContainer">
         <h3>Taraweeh Completion Dua</h3>
         <div class="dua-text">
             اللَّهُمَّ اجْعَلْ فِي قَلْبِي نُورًا، وَفِي لِسَانِي نُورًا، وَفِي سَمْعِي نُورًا، وَفِي بَصَرِي نُورًا، وَمِنْ فَوْقِي نُورًا، وَمِنْ تَحْتِي نُورًا، وَعَنْ يَمِينِي نُورًا، وَعَنْ شِمَالِي نُورًا، وَمِنْ أَمَامِي نُورًا، وَمِنْ خَلْفِي نُورًا، وَاجْعَلْ فِي نَفْسِي نُورًا، وَأَعْظِمْ لِي نُورًا
         </div>
         <div class="dua-translation">
-            "O Allah, place light in my heart, on my tongue, in my ears, and in my sight..."
+            "O Allah, place light in my heart, and on my tongue light, and in my ears light, and in my sight light, and above me light, and below me light, and to my right light, and to my left light, and before me light, and behind me light. Place in my soul light. Magnify for me light."
         </div>
     </div>
 
-    <!-- Register Service Worker -->
+    <!-- JavaScript should be placed here for better performance -->
     <script src="script.js"></script>
+    <footer>
+        <p>By - Rayyan Islam</p>
+    </footer>
+    
 </body>
 </html>
