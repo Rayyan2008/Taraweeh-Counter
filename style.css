@@ -222,6 +222,13 @@ button {
     transition: var(--transition);
     color: var(--dark-color);
 }
+.author {
+    font-size: 16px;
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 15px;
+}
+
 
 #totalRakats:focus {
     outline: none;
