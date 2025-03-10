@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taraweeh Rakat Counter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4e54c8;
+            --primary-gradient: linear-gradient(to right, #4e54c8, #8f94fb);
+            --accent-color: #5ad75a;
+            --dark-color: #2c3e50;
+            --light-color: #f8f9fd;
+            --break-color: #00c853;
+            --dua-bg-color: #fefaf0;
+            --dua-border-color: #8bc34a;
+            --shadow-sm: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f8f9fd;
+            color: var(--dark-color);
+            padding: 20px;
+            transition: var(--transition);
+            background-image: 
+                radial-gradient(#8f94fb 1px, transparent 1px),
+                radial-gradient(#8f94fb 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+            background-color: #f8f9fd;
+            background-attachment: fixed;
+            background-opacity: 0.2;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        h1 {
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 28px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+        }
+
+        .count-display {
+            font-size: 110px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 25px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .count-display:before {
+            content: 'Rakats';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            font-weight: 500;
+            color: #8f94fb;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .progress-container {
+            width: 100%;
+            margin: 30px 0;
+            background-color: rgba(78, 84, 200, 0.1);
+            border-radius: 30px;
+            height: 12px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 30px;
+            background: var(--primary-gradient);
+            width: 0%;
+            transition: width 0.5s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        #increment {
+            background: var(--primary-gradient);
+            color: white;
+            flex: 2;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #increment:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        #increment:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        #increment:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(100, 100);
+                opacity: 0;
+            }
+        }
+
+        #reset {
+            background-color: white;
+            color: #e74c3c;
+            border: 2px solid #e74c3c;
+            flex: 1;
+        }
+
+        #reset:hover {
+            background-color: #e74c3c;
+            color: white;
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .select-wrapper {
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        #totalRakats {
+            padding: 8px 30px 8px 12px;
+            font-size: 14px;
+            border-radius: 50px;
+            border: 2px solid rgba(78, 84, 200, 0.3);
+            background-color: white;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: var(--transition);
+            color: var(--dark-color);
+        }
+
+        #totalRakats:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .select-wrapper:after {
+            content: '▼';
+            font-size: 10px;
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            pointer-events: none;
+        }
+
+        #night-toggle {
+            background-color: #f1f1f1;
+            color: #555;
+            padding: 8px 16px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            border-radius: 50px;
+        }
+
+        #night-toggle:before {
+            content: '☀️';
+            margin-right: 5px;
+            font-size: 16px;
+        }
+
+        .night-mode #night-toggle:before {
+            content: '🌙';
+        }
+
+        #night-toggle:hover {
+            background-color: #e0e0e0;
+        }
+
+        .info {
+            margin-top: 30px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #666;
+            background-color: rgba(78, 84, 200, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .info p {
+            margin-bottom: 8px;
+        }
+
+        .info p:last-child {
+            margin-bottom: 0;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--break-color);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            box-shadow: var(--shadow-md);
+            z-index: 100;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .notification:before {
+            content: '⏱️';
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        .dua-container {
+            display: none;
+            max-width: 500px;
+            width: 100%;
+            margin-top: 30px;
+            padding: 25px;
+            background-color: var(--dua-bg-color);
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+            border-left: 5px solid var(--dua-border-color);
+            transition: var(--transition);
+        }
+
+        .dua-container h3 {
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 22px;
+            border-bottom: 2px solid rgba(139, 195, 74, 0.3);
+            padding-bottom: 10px;
+            position: relative;
+        }
+
+        .dua-text {
+            font-family: 'Amiri', serif;
+            font-size: 24px;
+            line-height: 1.8;
+            text-align: right;
+            margin-bottom: 20px;
+            color: #333;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            position: relative;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .dua-translation {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+            margin-top: 15px;
+            font-style: italic;
+            position: relative;
+            padding-left: 20px;
+            border-left: 3px solid rgba(139, 195, 74, 0.5);
+        }
+
+        .dua-container:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(139, 195, 74, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            border-radius: 50%;
+        }
+
+        .vibrate {
+            animation: vibrate 0.3s linear;
+        }
+
+        @keyframes vibrate {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Night mode styles */
+        .night-mode {
+            background-color: #1a1f35;
+            background-image: 
+                radial-gradient(rgba(78, 84, 200, 0.2) 1px, transparent 1px),
+                radial-gradient(rgba(78, 84, 200, 0.2) 1px, transparent 1px);
+        }
+
+        .night-mode .container {
+            background-color: #242b42;
+            color: #f8f9fa;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .night-mode h1, .night-mode .count-display {
+            color: #f8f9fa;
+        }
+
+        .night-mode .count-display:before {
+            color: #8f94fb;
+        }
+
+        .night-mode .info {
+            color: #bdc3c7;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .night-mode #reset {
+            background-color: transparent;
+            color: #e74c3c;
+            border: 2px solid #e74c3c;
+        }
+
+        .night-mode #reset:hover {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .night-mode #night-toggle {
+            background-color: #333;
+            color: #ddd;
+        }
+
+        .night-mode #totalRakats {
+            background-color: #242b42;
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #f8f9fa;
+        }
+
+        .night-mode .dua-container {
+            background-color: #2c3850;
+            border-left: 5px solid rgba(139, 195, 74, 0.7);
+        }
+
+        .night-mode .dua-text {
+            color: #f0f0f0;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .night-mode .dua-translation {
+            color: #ddd;
+            border-left: 3px solid rgba(139, 195, 74, 0.4);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            .container, .dua-container {
+                padding: 20px;
+                border-radius: 15px;
+            }
+
+            .count-display {
+                font-size: 80px;
+            }
+
+            .count-display:before {
+                font-size: 12px;
+                bottom: -5px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            #increment, #reset {
+                width: 100%;
+            }
+
+            .dua-text {
+                font-size: 20px;
+                padding: 10px;
+            }
+        }
+
+        /* Completion animation */
+        .celebrate {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f0f;
+            border-radius: 0;
+            animation: fall 5s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-50px) rotate(0deg) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg) scale(1);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notification">Take a short break!</div>
+    <div class="celebrate" id="celebrate"></div>
+    
+    <div class="container">
+        <h1>Taraweeh Rakat Counter</h1>
+        
+        <div class="count-display" id="rakatCount">0</div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="buttons">
+            <button id="increment">Count 2 Rakats</button>
+            <button id="reset">Reset</button>
+        </div>
+        
+        <div class="controls">
+            <div class="select-wrapper">
+                <label for="totalRakats">Total: </label>
+                <select id="totalRakats">
+                    <option value="8">8 Rakats</option>
+                    <option value="20" selected>20 Rakats</option>
+                    <option value="36">36 Rakats</option>
+                </select>
+            </div>
+            <button id="night-toggle">Night Mode</button>
+        </div>
+        
+        <div class="info">
+            <p>• Tap the "Count 2 Rakats" button after completing each 2 Rakats during Taraweeh.</p>
+            <p>• A break notification will appear after every 4 Rakats.</p>
+            <p>• The progress bar shows your progress through your Taraweeh prayer.</p>
+            <p>• Press <strong>Space</strong> to count or <strong>R</strong> to reset.</p>
+        </div>
+    </div>
+    
+    <div class="dua-container" id="duaContainer">
+        <h3>Taraweeh Completion Dua</h3>
+        <div class="dua-text">
+            اللَّهُمَّ اجْعَلْ فِي قَلْبِي نُورًا، وَفِي لِسَانِي نُورًا، وَفِي سَمْعِي نُورًا، وَفِي بَصَرِي نُورًا، وَمِنْ فَوْقِي نُورًا، وَمِنْ تَحْتِي نُورًا، وَعَنْ يَمِينِي نُورًا، وَعَنْ شِمَالِي نُورًا، وَمِنْ أَمَامِي نُورًا، وَمِنْ خَلْفِي نُورًا، وَاجْعَلْ فِي نَفْسِي نُورًا، وَأَعْظِمْ لِي نُورًا
+        </div>
+        <div class="dua-translation">
+            "O Allah, place light in my heart, and on my tongue light, and in my ears light, and in my sight light, and above me light, and below me light, and to my right light, and to my left light, and before me light, and behind me light. Place in my soul light. Magnify for me light."
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rakatCountElement = document.getElementById('rakatCount');
+            const incrementButton = document.getElementById('increment');
+            const resetButton = document.getElementById('reset');
+            const progressBar = document.getElementById('progressBar');
+            const totalRakatsSelect = document.getElementById('totalRakats');
+            const nightToggle = document.getElementById('night-toggle');
+            const container = document.querySelector('.container');
+            const notification = document.getElementById('notification');
+            const duaContainer = document.getElementById('duaContainer');
+            const celebrate = document.getElementById('celebrate');
+            
+            let rakatCount = 0;
+            let totalRakats = parseInt(totalRakatsSelect.value);
+            
+            function updateDisplay() {
+                rakatCountElement.textContent = rakatCount;
+                
+                // Update progress bar
+                const progressPercentage = (rakatCount / totalRakats) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
+                
+                // Show break notification every 4 Rakats (after 4, 8, 12, 16 rakats)
+                if (rakatCount > 0 && rakatCount % 4 === 0 && rakatCount < totalRakats) {
+                    showNotification("Take a short break!");
+                }
+                
+                // Show completion and dua when finished
+                if (rakatCount >= totalRakats) {
+                    showNotification("Taraweeh completed, Alhamdulillah!");
+                    duaContainer.style.display = "block";
+                    duaContainer.classList.add('pulse');
+                    createConfetti();
+                    rakatCountElement.style.color = "#00c853";
+                } else {
+                    duaContainer.style.display = "none";
+                    duaContainer.classList.remove('pulse');
+                    if (document.body.classList.contains('night-mode')) {
+                        rakatCountElement.style.color = "#f8f9fa";
+                    } else {
+                        rakatCountElement.style.color = "var(--primary-color)";
+                    }
+                }
+            }
+            
+            function showNotification(message) {
+                notification.textContent = message;
+                notification.classList.add('show');
+                
+                container.classList.add('vibrate');
+                setTimeout(() => {
+                    container.classList.remove('vibrate');
+                }, 300);
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            }
+            
+            function createConfetti() {
+                celebrate.innerHTML = '';
+                const colors = ['#4e54c8', '#8bc34a', '#f1c40f', '#e74c3c', '#3498db', '#9b59b6'];
+                
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.animationDelay = Math.random() * 5 + 's';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // Randomly create squares, circles, or triangles
+                    const shape = Math.floor(Math.random() * 3);
+                    if (shape === 0) {
+                        confetti.style.borderRadius = '50%';
+                    } else if (shape === 1) {
+                        confetti.style.width = '7px';
+                        confetti.style.height = '15px';
+                    } else {
+                        confetti.style.width = '0';
+                        confetti.style.height = '0';
+                        confetti.style.borderLeft = '5px solid transparent';
+                        confetti.style.borderRight = '5px solid transparent';
+                        confetti.style.borderBottom = '10px solid ' + colors[Math.floor(Math.random() * colors.length)];
+                        confetti.style.backgroundColor = 'transparent';
+                    }
+                    
+                    celebrate.appendChild(confetti);
+                }
+            }
+            
+            incrementButton.addEventListener('click', function() {
+                if (rakatCount < totalRakats) {
+                    // Add ripple effect
+                    const ripple = document.createElement('span');
+                    ripple.classList.add('ripple');
+                    this.appendChild(ripple);
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 1000);
+                    
+                    // Increment by 2 rakats at a time
+                    rakatCount += 2;
+                    if (rakatCount > totalRakats) {
+                        rakatCount = totalRakats;
+                    }
+                    updateDisplay();
+                }
+            });
+            
+            resetButton.addEventListener('click', function() {
+                rakatCount = 0;
+                duaContainer.style.display = "none";
+                duaContainer.classList.remove('pulse');
+                updateDisplay();
+                celebrate.innerHTML = '';
+            });
+            
+            totalRakatsSelect.addEventListener('change', function() {
+                totalRakats = parseInt(this.value);
+                // Reset count when changing total
+                rakatCount = 0;
+                duaContainer.style.display = "none";
+                duaContainer.classList.remove('pulse');
+                updateDisplay();
+                celebrate.innerHTML = '';
+            });
+            
+            nightToggle.addEventListener('click', function() {
+                document.body.classList.toggle('night-mode');
+                if (rakatCount < totalRakats) {
+                    if (document.body.classList.contains('night-mode')) {
+                        rakatCountElement.style.color = "#f8f9fa";
+                    } else {
+                        rakatCountElement.style.color = "var(--primary-color)";
+                    }
+                }
+            });
+            
+            // Enable keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.code === 'Space') {
+                    // Space bar increments counter
+                    incrementButton.click();
+                    e.preventDefault(); // Prevent page scrolling
+                } else if (e.code === 'KeyR') {
+                    // 'R' key resets counter
+                    resetButton.click();
+                }
+            });
+            
+            // Initialize display
+            updateDisplay();
+        });
+    </script>
+</body>
+</html>
