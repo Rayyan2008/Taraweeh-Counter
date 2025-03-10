@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taraweeh Rakat Counter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    
+</head><link rel="stylesheet" href="style.css">
+
+<script src="script.js"></script>
+<body>
+    <div class="notification" id="notification">Take a short break!</div>
+    <div class="celebrate" id="celebrate"></div>
+    
+    <div class="container">
+        <h1>Taraweeh Rakat Counter</h1>
+        
+        <div class="count-display" id="rakatCount">0</div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="buttons">
+            <button id="increment">Count 2 Rakats</button>
+            <button id="reset">Reset</button>
+        </div>
+        
+        <div class="controls">
+            <div class="select-wrapper">
+                <label for="totalRakats">Total: </label>
+                <select id="totalRakats">
+                    <option value="8">8 Rakats</option>
+                    <option value="20" selected>20 Rakats</option>
+                    <option value="36">36 Rakats</option>
+                </select>
+            </div>
+            <button id="night-toggle">Night Mode</button>
+        </div>
+        
+        <div class="info">
+            <p>• Tap the "Count 2 Rakats" button after completing each 2 Rakats during Taraweeh.</p>
+            <p>• A break notification will appear after every 4 Rakats.</p>
+            <p>• The progress bar shows your progress through your Taraweeh prayer.</p>
+            <p>• Press <strong>Space</strong> to count or <strong>R</strong> to reset.</p>
+        </div>
+    </div>
+    
+    <div class="dua-container" id="duaContainer">
+        <h3>Taraweeh Completion Dua</h3>
+        <div class="dua-text">
+            اللَّهُمَّ اجْعَلْ فِي قَلْبِي نُورًا، وَفِي لِسَانِي نُورًا، وَفِي سَمْعِي نُورًا، وَفِي بَصَرِي نُورًا، وَمِنْ فَوْقِي نُورًا، وَمِنْ تَحْتِي نُورًا، وَعَنْ يَمِينِي نُورًا، وَعَنْ شِمَالِي نُورًا، وَمِنْ أَمَامِي نُورًا، وَمِنْ خَلْفِي نُورًا، وَاجْعَلْ فِي نَفْسِي نُورًا، وَأَعْظِمْ لِي نُورًا
+        </div>
+        <div class="dua-translation">
+            "O Allah, place light in my heart, and on my tongue light, and in my ears light, and in my sight light, and above me light, and below me light, and to my right light, and to my left light, and before me light, and behind me light. Place in my soul light. Magnify for me light."
+        </div>
+    </div>
+
+</body>
+</html>
