@@ -356,7 +356,7 @@ button {
     margin-bottom: 20px;
     font-weight: 600;
     font-size: 22px;
-    border-bottom: 2px solid rgba(139, 195, 74, 0.3);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
     padding-bottom: 10px;
     position: relative;
 }
