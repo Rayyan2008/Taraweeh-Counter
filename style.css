@@ -37,7 +37,9 @@ body {
     background-position: 0 0, 25px 25px;
     background-color: #f8f9fd;
     background-attachment: fixed;
-    background-opacity: 0.2;
+    opacity: 0.2; /* ✅ Correct */
+
+
 }
 
 .container {
