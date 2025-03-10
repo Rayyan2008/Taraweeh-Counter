@@ -64,6 +64,14 @@ h1 {
     position: relative;
     display: inline-block;
 
+    .site-logo {
+        width: 100px;  /* Adjust size */
+        height: auto;
+        display: block;
+        margin: 0 auto 15px;
+    }
+    
+
     footer {
         margin-top: 20px;
         font-size: 14px;
