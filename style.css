@@ -37,7 +37,8 @@ body {
     background-position: 0 0, 25px 25px;
     background-color: #f8f9fd;
     background-attachment: fixed;
-    opacity: 0.2; /* ✅ Correct */
+    background-color: rgba(248, 249, 253, 1); /* ✅ Full opacity */
+
 
 
 }
